@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # Apps do projeto lanchonete-app
     'pedidos',
     'produtos',
     'usuarios',
+
+    #rest
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
