@@ -1,6 +1,11 @@
-from django.urls import path
-from .views import PedidoCreateAPIView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import PedidoViewSet, ItemPedidoViewSet
+
+router = DefaultRouter()
+router.register(r'pedidos', PedidoViewSet)
+router.register(r'itens-pedido', ItemPedidoViewSet)
 
 urlpatterns = [
-    path('api/pedidos/', PedidoCreateAPIView.as_view(), name='pedido-create'),
+    path('api/', include(router.urls)),
 ]
