@@ -1,23 +1,33 @@
-import React, { useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
 import api from '../services/api';
-import ProductCard from "./ProductCard";
+import CategoryFilter from './CategoryFilter';
+import ProductCard from './ProductCard';
 
-function ProductsList(){
-    const [products, setProducts] = useState([]);
+function ProductsList() {
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('TODAS');
 
-    useEffect(() => {
-        api.get('produtos/')
-            .then(res => setProducts(res.data.results))
-            .catch(err => console.error(err));
-    }, []);
+  useEffect(() => {
+    let url = 'produtos/';
+    if (selectedCategory !== 'TODAS') {
+      url += `?categoria=${selectedCategory}`;
+    }
 
-    return (
-        <div className="product-list">
-            {products.map((produto) =>(
-                <ProductCard key={produto.id} produto={produto}/>
-            ))}
-        </div>
-    );
+    api.get(url)
+        .then(res => {
+        setProducts(res.data.results);
+        })
+        .catch(err => console.error(err));
+  }, [selectedCategory]);
+
+  return (
+    <div>
+      <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
+      <div className="products-grid">
+        {products.map(p => <ProductCard key={p.id} produto={p} />)}
+      </div>
+    </div>
+  );
 }
 
 export default ProductsList;
